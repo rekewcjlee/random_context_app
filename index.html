@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สุ่มบริบทแห่ง "((ความเป็น))"</title>
+    <title>สุ่มบริบทแห่ง "ความเป็น"</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <style>
         :root {
             --bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.85); /* ปรับให้ทึบขึ้นนิดนึงให้อ่านง่าย */
+            --glass-border: rgba(255, 255, 255, 0.6);
             --primary: #6c5ce7;
             --accent: #a29bfe;
             --text-main: #2d3436;
@@ -19,9 +19,7 @@
 
         body {
             font-family: 'Prompt', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            margin: 0; padding: 0; min-height: 100vh;
             color: var(--text-main);
             background: var(--bg-gradient);
             background-size: 400% 400%;
@@ -38,249 +36,186 @@
         .wrapper {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px; /* ลด padding บนมือถือ */
             position: relative;
         }
 
-        /* ปุ่ม Reset Data มุมขวาบน */
+        /* ปุ่ม Reset Data */
         .reset-data-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.3);
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8em;
-            color: white;
-            backdrop-filter: blur(4px);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .reset-data-btn:hover {
-            background: rgba(255, 50, 50, 0.5);
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255,255,255,0.4); border: none;
+            padding: 6px 10px; border-radius: 8px; cursor: pointer;
+            font-size: 0.8em; color: white; backdrop-filter: blur(4px);
+            display: flex; align-items: center; gap: 5px; z-index: 10;
         }
 
         header {
-            text-align: center;
-            margin-bottom: 50px;
-            animation: fadeInDown 1s ease;
-            padding-top: 40px;
+            text-align: center; margin-bottom: 30px;
+            animation: fadeInDown 1s ease; padding-top: 40px;
         }
 
         h1 {
-            font-size: 3em;
-            font-weight: 600;
-            color: white;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            margin: 0;
+            font-size: 2.2em; /* ปรับขนาดฟอนต์ให้พอดีมือถือ */
+            font-weight: 600; color: white;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.2); margin: 0;
+            line-height: 1.2;
         }
         
         h1 span {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 20px;
-            border-radius: 50px;
-            backdrop-filter: blur(5px);
+            display: inline-block; background: rgba(255,255,255,0.2);
+            padding: 5px 15px; border-radius: 50px; backdrop-filter: blur(5px);
         }
 
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            padding: 30px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px; border: 1px solid var(--glass-border);
+            padding: 20px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .panel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+            display: flex; flex-direction: column;
+            /* สำคัญ: กำหนดความสูงสูงสุดเพื่อให้เลื่อนได้ */
+            max-height: 400px; 
         }
 
         .panel-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            color: var(--primary);
-            font-size: 1.2em;
-            font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 15px; color: var(--primary);
+            font-size: 1.1em; font-weight: 600;
         }
 
-        .tags-area {
+        /* --- พื้นที่ Tags ที่เลื่อนได้ --- */
+        .tags-scroll-area {
             flex: 1;
-            background: rgba(255,255,255,0.6);
-            border-radius: 16px;
-            padding: 15px;
-            min-height: 200px;
-            border: 2px solid transparent;
-            transition: all 0.3s;
+            overflow-y: auto; /* ให้เลื่อนแนวตั้งได้ */
+            padding-right: 5px; /* เผื่อที่ให้ scrollbar */
+            margin-bottom: 15px;
             display: flex;
             flex-wrap: wrap;
             align-content: flex-start;
-            gap: 10px;
-            cursor: text;
+            gap: 8px;
+            min-height: 100px;
+            /* ปรับแต่ง Scrollbar ให้สวยงาม */
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) transparent;
         }
 
-        .tags-area:focus-within {
-            background: #fff;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        /* Webkit Scrollbar style */
+        .tags-scroll-area::-webkit-scrollbar { width: 6px; }
+        .tags-scroll-area::-webkit-scrollbar-track { background: transparent; }
+        .tags-scroll-area::-webkit-scrollbar-thumb { background-color: var(--accent); border-radius: 10px; }
+
+        .tag {
+            padding: 6px 12px; border-radius: 50px; font-size: 14px;
+            font-weight: 500; display: inline-flex; align-items: center; gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); user-select: none;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .tag.name-tag { background: linear-gradient(135deg, #0984e3, #74b9ff); color: white; }
+        .tag.context-tag { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; }
+        .tag i {
+            cursor: pointer; background: rgba(255,255,255,0.3); border-radius: 50%;
+            width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+        }
+
+        /* --- ส่วนช่องพิมพ์ใหม่ (แยกออกมาด้านล่าง) --- */
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 5px 5px 5px 15px;
+            border-radius: 50px;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.2);
         }
 
         .tag-input-field {
-            border: none;
-            background: transparent;
-            outline: none;
-            font-family: 'Prompt', sans-serif;
-            font-size: 16px;
-            padding: 8px;
-            flex: 1;
-            min-width: 150px;
-            color: #333;
+            border: none; background: transparent; outline: none;
+            font-family: 'Prompt', sans-serif; font-size: 16px;
+            flex: 1; color: #333; min-width: 0; /* แก้ปัญหา input ล้นบนมือถือ */
         }
 
-        .tag {
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            user-select: none;
+        /* ปุ่มบวก (+) */
+        .add-btn {
+            background: var(--primary); color: white; border: none;
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 20px; flex-shrink: 0;
             transition: transform 0.2s;
         }
-
-        .tag:hover { transform: scale(1.05); }
-        .tag.name-tag { background: linear-gradient(135deg, #0984e3, #74b9ff); color: white; }
-        .tag.context-tag { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; }
-
-        .tag i {
-            cursor: pointer;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-        .tag i:hover { background: #fff; color: #d63031; }
-
-        .hint {
-            font-size: 0.85em;
-            color: #636e72;
-            margin-top: 10px;
-            text-align: right;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 5px;
-        }
+        .add-btn:active { transform: scale(0.9); }
 
         .controls {
-            text-align: center;
-            margin: 20px 0 50px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+            text-align: center; margin: 20px 0 50px;
+            display: flex; justify-content: center; gap: 15px;
+            flex-wrap: wrap; /* ให้ปุ่มตกบรรทัดถ้ายาวเกิน */
         }
 
         .btn {
-            padding: 18px 45px;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 1.2em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
+            padding: 15px 30px; border: none; border-radius: 50px;
+            font-family: 'Prompt', sans-serif; font-size: 1.1em; font-weight: 600;
+            cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
         }
 
-        .btn-primary { background: white; color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
-        .btn-reset { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); }
-        .btn-reset:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+        .btn-primary { background: white; color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-reset { background: rgba(255,255,255,0.25); color: white; border: 1px solid rgba(255,255,255,0.4); }
 
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
             z-index: 1000; display: none; flex-direction: column;
-            align-items: center; justify-content: center; color: white;
+            align-items: center; justify-content: center; color: white; text-align: center;
         }
         
         .spinner {
-            width: 60px; height: 60px;
-            border: 6px solid rgba(255,255,255,0.3);
-            border-top: 6px solid #fff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            width: 50px; height: 50px;
+            border: 5px solid rgba(255,255,255,0.3); border-top: 5px solid #fff;
+            border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
         }
 
         #result-area {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px; padding-bottom: 50px;
         }
 
         .result-card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            padding: 35px 25px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border: 2px solid white;
-            opacity: 0;
-            transform: translateY(30px);
+            background: rgba(255, 255, 255, 0.95); border-radius: 16px;
+            padding: 25px 20px; text-align: center; position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 2px solid white;
+            opacity: 0; transform: translateY(20px);
         }
-
         .result-card::before {
-            content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px;
-            border: 2px dashed #dfe6e9; border-radius: 15px; pointer-events: none;
+            content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 2px dashed #dfe6e9; border-radius: 12px; pointer-events: none;
         }
+        .result-card h3 { margin: 0 0 8px; color: #2d3436; font-size: 1.4em; }
+        .result-label { font-size: 0.8em; color: #b2bec3; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .result-context { font-size: 1.3em; color: var(--primary); font-weight: 600; line-height: 1.4; }
 
-        .result-card h3 { margin: 0 0 10px; color: #2d3436; font-size: 1.5em; }
-        .result-label { font-size: 0.9em; color: #b2bec3; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: block; }
-        .result-context { font-size: 1.4em; color: var(--primary); font-weight: 600; line-height: 1.4; }
-
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
-            .main-grid { grid-template-columns: 1fr; }
-            h1 { font-size: 2em; }
-            .panel { padding: 20px; }
+            .main-grid { grid-template-columns: 1fr; } /* เรียงแนวตั้งบนมือถือ */
+            .wrapper { padding: 15px; }
+            h1 { font-size: 1.8em; }
             .btn { width: 100%; justify-content: center; }
-            .controls { flex-direction: column; }
+            .panel { max-height: 300px; } /* บนมือถือให้กล่องเตี้ยลงหน่อย */
         }
     </style>
 </head>
@@ -294,7 +229,7 @@
 
     <div class="wrapper">
         <button class="reset-data-btn" onclick="resetToDefaults()">
-            <i class="ri-refresh-line"></i> รีเซ็ตค่าเริ่มต้น
+            <i class="ri-refresh-line"></i> รีเซ็ต
         </button>
 
         <header>
@@ -306,20 +241,32 @@
                 <div class="panel-header">
                     <i class="ri-user-smile-line"></i> รายชื่อผู้เข้าร่วม
                 </div>
-                <div class="tags-area" onclick="document.getElementById('name-input').focus()">
-                    <input type="text" id="name-input" class="tag-input-field" placeholder="พิมพ์ชื่อแล้วกด Enter...">
+                
+                <div class="tags-scroll-area" id="names-container">
+                    </div>
+
+                <div class="input-wrapper">
+                    <input type="text" id="name-input" class="tag-input-field" placeholder="พิมพ์ชื่อ...">
+                    <button class="add-btn" onclick="addFromInput('name-input', 'names')">
+                        <i class="ri-add-line"></i>
+                    </button>
                 </div>
-                <div class="hint"><i class="ri-keyboard-line"></i> กด Enter เพื่อเพิ่มชื่อ</div>
             </div>
 
             <div class="panel">
                 <div class="panel-header">
                     <i class="ri-lightbulb-flash-line"></i> สภาวะ / บริบท
                 </div>
-                <div class="tags-area" onclick="document.getElementById('context-input').focus()">
-                    <input type="text" id="context-input" class="tag-input-field" placeholder="พิมพ์บริบทแล้วกด Enter...">
+                
+                <div class="tags-scroll-area" id="contexts-container">
+                    </div>
+
+                <div class="input-wrapper">
+                    <input type="text" id="context-input" class="tag-input-field" placeholder="พิมพ์บริบท...">
+                    <button class="add-btn" onclick="addFromInput('context-input', 'contexts')">
+                        <i class="ri-add-line"></i>
+                    </button>
                 </div>
-                <div class="hint"><i class="ri-keyboard-line"></i> กด Enter เพื่อเพิ่มบริบท</div>
             </div>
         </div>
 
@@ -337,7 +284,6 @@
 
     <script>
         let names = [];
-        // ค่าเริ่มต้น (Default)
         const defaultContexts = [
             "((เป็น))ความสว่าง", "((เป็น))ของขวัญล้ำค่าให้ผู้คนที่เราพบเจอ", "((เป็น))ความอิ่มเอมใจ", 
             "((เป็น))ความเมตตาให้กับผู้อื่นและตัวเอง", "((เป็น))ความรักไร้เงื่อนไข", "((เป็น))ความสงบภายใน",
@@ -353,74 +299,75 @@
         
         let contexts = [];
 
-        // โหลดข้อมูลเมื่อเปิดเว็บ
         window.onload = function() {
             loadFromStorage();
             renderTags('names');
             renderTags('contexts');
-            setupInput('name-input', 'names');
-            setupInput('context-input', 'contexts');
+            setupEnterKey('name-input', 'names');
+            setupEnterKey('context-input', 'contexts');
         };
 
-        // ฟังก์ชันโหลดข้อมูลจาก LocalStorage
         function loadFromStorage() {
             const storedNames = localStorage.getItem('mindCardNames');
             const storedContexts = localStorage.getItem('mindCardContexts');
-
-            if (storedNames) {
-                names = JSON.parse(storedNames);
-            } else {
-                names = []; // ไม่มีข้อมูลเก่า ให้ว่างไว้
-            }
-
-            if (storedContexts) {
-                contexts = JSON.parse(storedContexts);
-            } else {
-                contexts = [...defaultContexts]; // ไม่มีข้อมูลเก่า ให้ใช้ค่าเริ่มต้น
-            }
+            names = storedNames ? JSON.parse(storedNames) : [];
+            contexts = storedContexts ? JSON.parse(storedContexts) : [...defaultContexts];
         }
 
-        // ฟังก์ชันบันทึกข้อมูลลง LocalStorage
         function saveToStorage() {
             localStorage.setItem('mindCardNames', JSON.stringify(names));
             localStorage.setItem('mindCardContexts', JSON.stringify(contexts));
         }
 
-        // ฟังก์ชันรีเซ็ตค่ากลับเป็นค่าเริ่มต้น
         function resetToDefaults() {
             if(confirm("คุณแน่ใจหรือไม่ที่จะรีเซ็ตข้อมูลทั้งหมดกลับเป็นค่าเริ่มต้น?")) {
                 localStorage.removeItem('mindCardNames');
                 localStorage.removeItem('mindCardContexts');
-                location.reload(); // รีเฟรชหน้าจอ
+                location.reload();
             }
         }
 
-        function setupInput(inputId, arrayName) {
+        // ฟังก์ชันกลางสำหรับการเพิ่มข้อมูล (ใช้ได้ทั้ง Enter และ ปุ่มกด)
+        function addFromInput(inputId, arrayName) {
             const input = document.getElementById(inputId);
-            input.addEventListener('keydown', function(e) {
+            const value = input.value.trim();
+            
+            if (value) {
+                if (arrayName === 'names') names.push(value);
+                else contexts.push(value);
+                
+                input.value = ''; 
+                saveToStorage();
+                renderTags(arrayName);
+                
+                // เลื่อน Scrollbar ลงมาล่างสุดอัตโนมัติเพื่อให้เห็นอันใหม่
+                const containerId = arrayName === 'names' ? 'names-container' : 'contexts-container';
+                const container = document.getElementById(containerId);
+                setTimeout(() => {
+                    container.scrollTop = container.scrollHeight;
+                }, 100);
+            } else {
+                // Focus กลับไปที่ Input ถ้ายิงว่างเปล่า
+                input.focus();
+            }
+        }
+
+        // รองรับปุ่ม Enter เหมือนเดิม
+        function setupEnterKey(inputId, arrayName) {
+            document.getElementById(inputId).addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    const value = input.value.trim();
-                    if (value) {
-                        if (arrayName === 'names') names.push(value);
-                        else contexts.push(value);
-                        
-                        input.value = ''; 
-                        saveToStorage(); // บันทึกทุกครั้งที่เพิ่ม
-                        renderTags(arrayName); 
-                    }
+                    addFromInput(inputId, arrayName);
                 }
             });
         }
 
         function renderTags(type) {
             const dataArray = type === 'names' ? names : contexts;
-            const containerId = type === 'names' ? 'name-input' : 'context-input';
-            const inputElement = document.getElementById(containerId);
-            const container = inputElement.parentElement;
+            const containerId = type === 'names' ? 'names-container' : 'contexts-container';
+            const container = document.getElementById(containerId);
 
-            const oldTags = container.querySelectorAll('.tag');
-            oldTags.forEach(tag => tag.remove());
+            container.innerHTML = ''; // ล้างเก่า
 
             dataArray.forEach((text, index) => {
                 const tag = document.createElement('div');
@@ -429,19 +376,16 @@
                     <span>${text}</span>
                     <i class="ri-close-line" onclick="removeTag('${type}', ${index})"></i>
                 `;
-                container.insertBefore(tag, inputElement);
+                container.appendChild(tag);
             });
         }
 
         function removeTag(type, index) {
-            if (type === 'names') {
-                names.splice(index, 1);
-                renderTags('names');
-            } else {
-                contexts.splice(index, 1);
-                renderTags('contexts');
-            }
-            saveToStorage(); // บันทึกทุกครั้งที่ลบ
+            if (type === 'names') names.splice(index, 1);
+            else contexts.splice(index, 1);
+            
+            saveToStorage();
+            renderTags(type);
         }
 
         function startRandomize() {
