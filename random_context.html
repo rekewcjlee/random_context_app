@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สุ่มบริบทแห่ง "ความเป็น"</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #9b59b6;
+            --secondary-color: #8e44ad;
+            --accent-color: #e056fd;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: #4a4a4a;
+            /* พื้นหลังไล่สีพาสเทลนุ่มๆ */
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-image: linear-gradient(120deg, #fdfbfb 0%, #e6dee9 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* เพิ่มวงกลมสีฟุ้งๆ ด้านหลังเพื่อมิติ (Ambient Light) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(230,230,250,0.8) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            filter: blur(60px);
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(255,240,245,0.8) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            letter-spacing: 0.5px;
+        }
+
+        h1 span {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 300px;
+            /* Glassmorphism Effect */
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s ease;
+        }
+
+        .input-group:hover {
+            transform: translateY(-5px);
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 15px;
+            color: #57606f;
+            font-size: 1.1em;
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            padding: 15px;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+            font-size: 15px;
+            font-family: 'Prompt', sans-serif;
+            line-height: 1.6;
+            color: #555;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            background-color: #fff;
+            border-color: #d2b4de;
+            box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.1);
+        }
+
+        .controls {
+            text-align: center;
+            margin: 50px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 18px;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px -10px rgba(142, 68, 173, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 25px -10px rgba(142, 68, 173, 0.6);
+        }
+
+        button:hover::after {
+            opacity: 1;
+        }
+
+        button.reset {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            box-shadow: 0 10px 20px -10px rgba(127, 140, 141, 0.5);
+        }
+
+        button.reset:hover {
+            box-shadow: 0 15px 25px -10px rgba(127, 140, 141, 0.6);
+        }
+
+        #result-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,1);
+            animation: floatIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+        }
+
+        .card strong {
+            display: block;
+            color: #2c3e50;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card .label-text {
+            display: inline-block;
+            font-size: 0.85em;
+            color: #95a5a6;
+            margin-bottom: 15px;
+            background: #f0f2f5;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .card .context {
+            display: block;
+            color: var(--secondary-color);
+            font-weight: 500;
+            font-size: 1.3em;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .error {
+            grid-column: 1 / -1;
+            color: #e74c3c;
+            text-align: center;
+            font-weight: 500;
+            background: #fceceb;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        /* Animation */
+        @keyframes floatIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .controls {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>✨ <span>สุ่มบริบทแห่ง "ความเป็น"</span> ✨</h1>
+
+    <div class="container">
+        <div class="input-group">
+            <label for="names">รายชื่อผู้เข้าร่วม (บรรทัดละ 1 ชื่อ)</label>
+            <textarea id="names" placeholder="พิมพ์ชื่อที่นี่...
+เช่น:
+อารยะ
+เอก
+บี
+ซี"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="contexts">สภาวะแห่ง "ความเป็น" (แก้ไขได้)</label>
+            <textarea id="contexts">เป็นความสว่าง
+เป็นของขวัญล้ำค่าให้ผู้คนที่เราพบเจอ
+เป็นความอิ่มเอมใจ
+เป็นความเมตตาให้กับผู้อื่นและตัวเอง
+เป็นความรักไร้เงื่อนไข
+เป็นความสงบภายใน
+เป็นความสะดวกสบายหรูหรา
+เป็นการคิดดีๆ พูดดีๆ กับทุกคนที่พบเจอ
+เป็นหนึ่งเดียวกัน
+เป็นความเบาสบายไร้กังวล
+เป็นการขอบคุณ
+เป็นปัจจุบัน
+เป็นอิสระจากการคาดหวังผลลัพธ์
+เป็นหนึ่งเดียวกับธรรมชาติ
+เป็นความใส่ใจอย่างเต็มที่ในสิ่งที่ต้องการสร้างสรรค์ให้เกิดขึ้น
+เป็นการยอมรับผู้คนและสถานการณ์ในแบบที่เป็น
+เป็นความตระหนักรู้ในการเลือก
+เป็นการให้ในสิ่งที่ต้องการได้รับ
+เป็นศักยภาพอันบริสุทธิ์
+เป็นความตั้งใจ
+เป็นแสงสว่าง
+เป็นความวางใจ
+เป็นความใจเย็น
+เป็นการยอมรับความไม่สมบูรณ์
+เป็นการสร้างสรรค์ที่ทรงพลัง
+เป็นพลังงานดีๆ
+เป็นความอุดมสมบูรณ์
+เป็นความรัก
+เป็นการฟัง
+เป็นการไหลไปตามโฟลว์
+เป็นความสุข</textarea>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="randomize()">💫 สุ่มสภาวะ</button>
+        <button class="reset" onclick="clearResults()">ล้างผลลัพธ์</button>
+    </div>
+
+    <div id="result-area"></div>
+
+    <script>
+        function randomize() {
+            const namesInput = document.getElementById('names').value.trim();
+            const contextsInput = document.getElementById('contexts').value.trim();
+            const resultArea = document.getElementById('result-area');
+
+            resultArea.innerHTML = '';
+
+            if (!namesInput || !contextsInput) {
+                resultArea.innerHTML = '<p class="error">กรุณากรอกรายชื่อผู้เข้าร่วม</p>';
+                return;
+            }
+
+            let names = namesInput.split('\n').filter(line => line.trim() !== '');
+            let contexts = contextsInput.split('\n').filter(line => line.trim() !== '');
+
+            if (names.length === 0) {
+                resultArea.innerHTML = '<p class="error">กรุณากรอกรายชื่ออย่างน้อย 1 ชื่อ</p>';
+                return;
+            }
+
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Shuffle Contexts
+            let shuffledContexts = shuffle([...contexts]);
+            let shuffledNames = shuffle([...names]);
+
+            let html = '';
+            
+            shuffledNames.forEach((name, index) => {
+                let contextText = '';
+                if (index < shuffledContexts.length) {
+                    contextText = shuffledContexts[index];
+                } else {
+                    // วนลูปถ้าคนเยอะกว่าบริบท
+                    contextText = shuffledContexts[index % shuffledContexts.length];
+                }
+
+                // เพิ่ม animation delay เพื่อให้การ์ดค่อยๆ ขึ้นมาทีละใบ
+                let delay = index * 0.1;
+
+                html += `
+                    <div class="card" style="animation-delay: ${delay}s">
+                        <strong>${name}</strong>
+                        <span class="label-text">ได้รับสภาวะ</span>
+                        <span class="context">"${contextText}"</span>
+                    </div>
+                `;
+            });
+
+            resultArea.innerHTML = html;
+        }
+
+        function clearResults() {
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.opacity = '0';
+            setTimeout(() => {
+                resultArea.innerHTML = '';
+                resultArea.style.opacity = '1';
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>
