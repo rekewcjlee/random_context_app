@@ -4,406 +4,497 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สุ่มบริบทแห่ง "ความเป็น"</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <style>
         :root {
-            --primary-color: #9b59b6;
-            --secondary-color: #8e44ad;
-            --accent-color: #e056fd;
+            --bg-gradient: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --primary: #6c5ce7;
+            --accent: #a29bfe;
+            --text-main: #2d3436;
         }
 
         body {
             font-family: 'Prompt', sans-serif;
             margin: 0;
-            padding: 40px 20px;
+            padding: 0;
             min-height: 100vh;
-            color: #4a4a4a;
-            /* พื้นหลังไล่สีพาสเทลนุ่มๆ */
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            background-image: linear-gradient(120deg, #fdfbfb 0%, #e6dee9 100%);
-            background-attachment: fixed;
-            position: relative;
+            color: var(--text-main);
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             overflow-x: hidden;
         }
 
-        /* เพิ่มวงกลมสีฟุ้งๆ ด้านหลังเพื่อมิติ (Ambient Light) */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(230,230,250,0.8) 0%, rgba(255,255,255,0) 70%);
-            z-index: -1;
-            filter: blur(60px);
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: -10%;
-            right: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(255,240,245,0.8) 0%, rgba(255,255,255,0) 70%);
-            z-index: -1;
-            filter: blur(60px);
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* ปุ่ม Reset Data มุมขวาบน */
+        .reset-data-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            color: white;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .reset-data-btn:hover {
+            background: rgba(255, 50, 50, 0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+            padding-top: 40px;
         }
 
         h1 {
-            text-align: center;
-            color: var(--secondary-color);
+            font-size: 3em;
             font-weight: 600;
-            font-size: 2.5em;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
-            letter-spacing: 0.5px;
+            color: white;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            margin: 0;
         }
-
+        
         h1 span {
             display: inline-block;
-            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
         }
 
-        .container {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            max-width: 1000px;
-            margin: 0 auto;
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
-        .input-group {
-            flex: 1;
-            min-width: 300px;
-            /* Glassmorphism Effect */
+        .panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 30px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-radius: 24px;
             border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-soft);
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
-        .input-group:hover {
+        .panel:hover {
             transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
         }
 
-        label {
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 1.2em;
             font-weight: 600;
-            display: block;
-            margin-bottom: 15px;
-            color: #57606f;
-            font-size: 1.1em;
         }
 
-        textarea {
-            width: 100%;
-            height: 220px;
-            padding: 15px;
-            border: 2px solid transparent;
+        .tags-area {
+            flex: 1;
+            background: rgba(255,255,255,0.6);
             border-radius: 16px;
-            box-sizing: border-box;
-            resize: vertical;
-            font-size: 15px;
-            font-family: 'Prompt', sans-serif;
-            line-height: 1.6;
-            color: #555;
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);
-            transition: all 0.3s ease;
+            padding: 15px;
+            min-height: 200px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 10px;
+            cursor: text;
         }
 
-        textarea:focus {
+        .tags-area:focus-within {
+            background: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+
+        .tag-input-field {
+            border: none;
+            background: transparent;
             outline: none;
-            background-color: #fff;
-            border-color: #d2b4de;
-            box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.1);
+            font-family: 'Prompt', sans-serif;
+            font-size: 16px;
+            padding: 8px;
+            flex: 1;
+            min-width: 150px;
+            color: #333;
+        }
+
+        .tag {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            user-select: none;
+            transition: transform 0.2s;
+        }
+
+        .tag:hover { transform: scale(1.05); }
+        .tag.name-tag { background: linear-gradient(135deg, #0984e3, #74b9ff); color: white; }
+        .tag.context-tag { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; }
+
+        .tag i {
+            cursor: pointer;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .tag i:hover { background: #fff; color: #d63031; }
+
+        .hint {
+            font-size: 0.85em;
+            color: #636e72;
+            margin-top: 10px;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 5px;
         }
 
         .controls {
             text-align: center;
-            margin: 50px 0;
+            margin: 20px 0 50px;
             display: flex;
             justify-content: center;
             gap: 20px;
         }
 
-        button {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
-            color: white;
+        .btn {
+            padding: 18px 45px;
             border: none;
-            padding: 16px 40px;
-            font-size: 18px;
-            font-family: 'Prompt', sans-serif;
-            font-weight: 500;
             border-radius: 50px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.2em;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px -10px rgba(142, 68, 173, 0.5);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             position: relative;
             overflow: hidden;
         }
 
-        button::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.2);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+        .btn-primary { background: white; color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .btn-reset { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); }
+        .btn-reset:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
 
-        button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 25px -10px rgba(142, 68, 173, 0.6);
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+            z-index: 1000; display: none; flex-direction: column;
+            align-items: center; justify-content: center; color: white;
         }
-
-        button:hover::after {
-            opacity: 1;
-        }
-
-        button.reset {
-            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
-            box-shadow: 0 10px 20px -10px rgba(127, 140, 141, 0.5);
-        }
-
-        button.reset:hover {
-            box-shadow: 0 15px 25px -10px rgba(127, 140, 141, 0.6);
+        
+        .spinner {
+            width: 60px; height: 60px;
+            border: 6px solid rgba(255,255,255,0.3);
+            border-top: 6px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
         }
 
         #result-area {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
         }
 
-        .card {
+        .result-card {
             background: rgba(255, 255, 255, 0.9);
-            padding: 30px 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 35px 25px;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,1);
-            animation: floatIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 2px solid white;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+        .result-card::before {
+            content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 2px dashed #dfe6e9; border-radius: 15px; pointer-events: none;
         }
 
-        .card strong {
-            display: block;
-            color: #2c3e50;
-            font-size: 1.4em;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+        .result-card h3 { margin: 0 0 10px; color: #2d3436; font-size: 1.5em; }
+        .result-label { font-size: 0.9em; color: #b2bec3; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: block; }
+        .result-context { font-size: 1.4em; color: var(--primary); font-weight: 600; line-height: 1.4; }
 
-        .card .label-text {
-            display: inline-block;
-            font-size: 0.85em;
-            color: #95a5a6;
-            margin-bottom: 15px;
-            background: #f0f2f5;
-            padding: 4px 12px;
-            border-radius: 12px;
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .card .context {
-            display: block;
-            color: var(--secondary-color);
-            font-weight: 500;
-            font-size: 1.3em;
-            line-height: 1.5;
-            margin-top: 10px;
-        }
-
-        .error {
-            grid-column: 1 / -1;
-            color: #e74c3c;
-            text-align: center;
-            font-weight: 500;
-            background: #fceceb;
-            padding: 15px;
-            border-radius: 12px;
-        }
-
-        /* Animation */
-        @keyframes floatIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .container {
-                flex-direction: column;
-            }
-            h1 {
-                font-size: 1.8em;
-            }
-            .controls {
-                flex-direction: column;
-            }
-            button {
-                width: 100%;
-            }
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2em; }
+            .panel { padding: 20px; }
+            .btn { width: 100%; justify-content: center; }
+            .controls { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-    <h1>✨ <span>สุ่มบริบทแห่ง "ความเป็น"</span> ✨</h1>
-
-    <div class="container">
-        <div class="input-group">
-            <label for="names">รายชื่อผู้เข้าร่วม (บรรทัดละ 1 ชื่อ)</label>
-            <textarea id="names" placeholder="พิมพ์ชื่อที่นี่...
-เช่น:
-อารยะ
-เอก
-บี
-ซี"></textarea>
-        </div>
-
-        <div class="input-group">
-            <label for="contexts">สภาวะแห่ง "ความเป็น" (แก้ไขได้)</label>
-            <textarea id="contexts">เป็นความสว่าง
-เป็นของขวัญล้ำค่าให้ผู้คนที่เราพบเจอ
-เป็นความอิ่มเอมใจ
-เป็นความเมตตาให้กับผู้อื่นและตัวเอง
-เป็นความรักไร้เงื่อนไข
-เป็นความสงบภายใน
-เป็นความสะดวกสบายหรูหรา
-เป็นการคิดดีๆ พูดดีๆ กับทุกคนที่พบเจอ
-เป็นหนึ่งเดียวกัน
-เป็นความเบาสบายไร้กังวล
-เป็นการขอบคุณ
-เป็นปัจจุบัน
-เป็นอิสระจากการคาดหวังผลลัพธ์
-เป็นหนึ่งเดียวกับธรรมชาติ
-เป็นความใส่ใจอย่างเต็มที่ในสิ่งที่ต้องการสร้างสรรค์ให้เกิดขึ้น
-เป็นการยอมรับผู้คนและสถานการณ์ในแบบที่เป็น
-เป็นความตระหนักรู้ในการเลือก
-เป็นการให้ในสิ่งที่ต้องการได้รับ
-เป็นศักยภาพอันบริสุทธิ์
-เป็นความตั้งใจ
-เป็นแสงสว่าง
-เป็นความวางใจ
-เป็นความใจเย็น
-เป็นการยอมรับความไม่สมบูรณ์
-เป็นการสร้างสรรค์ที่ทรงพลัง
-เป็นพลังงานดีๆ
-เป็นความอุดมสมบูรณ์
-เป็นความรัก
-เป็นการฟัง
-เป็นการไหลไปตามโฟลว์
-เป็นความสุข</textarea>
-        </div>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <h2>กำลังจัดสรรพลังงาน...</h2>
+        <p>ขอให้เป็นวันที่ดีของคุณ</p>
     </div>
 
-    <div class="controls">
-        <button onclick="randomize()">💫 สุ่มสภาวะ</button>
-        <button class="reset" onclick="clearResults()">ล้างผลลัพธ์</button>
-    </div>
+    <div class="wrapper">
+        <button class="reset-data-btn" onclick="resetToDefaults()">
+            <i class="ri-refresh-line"></i> รีเซ็ตค่าเริ่มต้น
+        </button>
 
-    <div id="result-area"></div>
+        <header>
+            <h1><span>สุ่มบริบทแห่ง "ความเป็น"</span></h1>
+        </header>
+
+        <div class="main-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <i class="ri-user-smile-line"></i> รายชื่อผู้เข้าร่วม
+                </div>
+                <div class="tags-area" onclick="document.getElementById('name-input').focus()">
+                    <input type="text" id="name-input" class="tag-input-field" placeholder="พิมพ์ชื่อแล้วกด Enter...">
+                </div>
+                <div class="hint"><i class="ri-keyboard-line"></i> กด Enter เพื่อเพิ่มชื่อ</div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <i class="ri-lightbulb-flash-line"></i> สภาวะ / บริบท
+                </div>
+                <div class="tags-area" onclick="document.getElementById('context-input').focus()">
+                    <input type="text" id="context-input" class="tag-input-field" placeholder="พิมพ์บริบทแล้วกด Enter...">
+                </div>
+                <div class="hint"><i class="ri-keyboard-line"></i> กด Enter เพื่อเพิ่มบริบท</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="startRandomize()">
+                <i class="ri-magic-line"></i> สุ่มสภาวะ
+            </button>
+            <button class="btn btn-reset" onclick="clearResults()">
+                <i class="ri-delete-bin-line"></i> ล้างผลลัพธ์
+            </button>
+        </div>
+
+        <div id="result-area"></div>
+    </div>
 
     <script>
-        function randomize() {
-            const namesInput = document.getElementById('names').value.trim();
-            const contextsInput = document.getElementById('contexts').value.trim();
-            const resultArea = document.getElementById('result-area');
+        let names = [];
+        // ค่าเริ่มต้น (Default)
+        const defaultContexts = [
+            "((เป็น))ความสว่าง", "((เป็น))ของขวัญล้ำค่าให้ผู้คนที่เราพบเจอ", "((เป็น))ความอิ่มเอมใจ", 
+            "((เป็น))ความเมตตาให้กับผู้อื่นและตัวเอง", "((เป็น))ความรักไร้เงื่อนไข", "((เป็น))ความสงบภายใน",
+            "((เป็น))ความสะดวกสบายหรูหรา", "((เป็น))การคิดดีๆ พูดดีๆ กับทุกคนที่พบเจอ", "((เป็น))หนึ่งเดียวกัน",
+            "((เป็น))ความเบาสบายไร้กังวล", "((เป็น))การขอบคุณ", "((เป็น))ปัจจุบัน",
+            "((เป็น))อิสระจากการคาดหวังผลลัพธ์", "((เป็น))หนึ่งเดียวกับธรรมชาติ", "((เป็น))ความใส่ใจอย่างเต็มที่ในสิ่งที่ต้องการสร้างสรรค์ให้เกิดขึ้น",
+            "((เป็น))การยอมรับผู้คนและสถานการณ์ในแบบที่เป็น", "((เป็น))ความตระหนักรู้ในการเลือก", "((เป็น))การให้ในสิ่งที่ต้องการได้รับ",
+            "((เป็น))ศักยภาพอันบริสุทธิ์", "((เป็น))ความตั้งใจ", "((เป็น))แสงสว่าง",
+            "((เป็น))ความวางใจ", "((เป็น))ความใจเย็น", "((เป็น))การยอมรับ ความไม่สมบูรณ์",
+            "((เป็น))การสร้างสรรค์ที่ทรงพลัง", "((เป็น))พลังงานดีๆ", "((เป็น))ความอุดมสมบูรณ์",
+            "((เป็น))ความรัก ❤️", "((เป็น))การฟัง", "((เป็น))การไหลไปตามโฟลว์", "((เป็น))ความสุข"
+        ];
+        
+        let contexts = [];
 
+        // โหลดข้อมูลเมื่อเปิดเว็บ
+        window.onload = function() {
+            loadFromStorage();
+            renderTags('names');
+            renderTags('contexts');
+            setupInput('name-input', 'names');
+            setupInput('context-input', 'contexts');
+        };
+
+        // ฟังก์ชันโหลดข้อมูลจาก LocalStorage
+        function loadFromStorage() {
+            const storedNames = localStorage.getItem('mindCardNames');
+            const storedContexts = localStorage.getItem('mindCardContexts');
+
+            if (storedNames) {
+                names = JSON.parse(storedNames);
+            } else {
+                names = []; // ไม่มีข้อมูลเก่า ให้ว่างไว้
+            }
+
+            if (storedContexts) {
+                contexts = JSON.parse(storedContexts);
+            } else {
+                contexts = [...defaultContexts]; // ไม่มีข้อมูลเก่า ให้ใช้ค่าเริ่มต้น
+            }
+        }
+
+        // ฟังก์ชันบันทึกข้อมูลลง LocalStorage
+        function saveToStorage() {
+            localStorage.setItem('mindCardNames', JSON.stringify(names));
+            localStorage.setItem('mindCardContexts', JSON.stringify(contexts));
+        }
+
+        // ฟังก์ชันรีเซ็ตค่ากลับเป็นค่าเริ่มต้น
+        function resetToDefaults() {
+            if(confirm("คุณแน่ใจหรือไม่ที่จะรีเซ็ตข้อมูลทั้งหมดกลับเป็นค่าเริ่มต้น?")) {
+                localStorage.removeItem('mindCardNames');
+                localStorage.removeItem('mindCardContexts');
+                location.reload(); // รีเฟรชหน้าจอ
+            }
+        }
+
+        function setupInput(inputId, arrayName) {
+            const input = document.getElementById(inputId);
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = input.value.trim();
+                    if (value) {
+                        if (arrayName === 'names') names.push(value);
+                        else contexts.push(value);
+                        
+                        input.value = ''; 
+                        saveToStorage(); // บันทึกทุกครั้งที่เพิ่ม
+                        renderTags(arrayName); 
+                    }
+                }
+            });
+        }
+
+        function renderTags(type) {
+            const dataArray = type === 'names' ? names : contexts;
+            const containerId = type === 'names' ? 'name-input' : 'context-input';
+            const inputElement = document.getElementById(containerId);
+            const container = inputElement.parentElement;
+
+            const oldTags = container.querySelectorAll('.tag');
+            oldTags.forEach(tag => tag.remove());
+
+            dataArray.forEach((text, index) => {
+                const tag = document.createElement('div');
+                tag.className = type === 'names' ? 'tag name-tag' : 'tag context-tag';
+                tag.innerHTML = `
+                    <span>${text}</span>
+                    <i class="ri-close-line" onclick="removeTag('${type}', ${index})"></i>
+                `;
+                container.insertBefore(tag, inputElement);
+            });
+        }
+
+        function removeTag(type, index) {
+            if (type === 'names') {
+                names.splice(index, 1);
+                renderTags('names');
+            } else {
+                contexts.splice(index, 1);
+                renderTags('contexts');
+            }
+            saveToStorage(); // บันทึกทุกครั้งที่ลบ
+        }
+
+        function startRandomize() {
+            if (names.length === 0 || contexts.length === 0) {
+                alert("กรุณาใส่ข้อมูลทั้งรายชื่อและบริบทอย่างน้อย 1 รายการครับ");
+                return;
+            }
+            const loading = document.getElementById('loading-overlay');
+            loading.style.display = 'flex';
+            setTimeout(() => {
+                loading.style.display = 'none';
+                performRandomize(); 
+                document.getElementById('result-area').scrollIntoView({ 
+                    behavior: 'smooth', block: 'start' 
+                });
+            }, 1000);
+        }
+
+        function performRandomize() {
+            const resultArea = document.getElementById('result-area');
             resultArea.innerHTML = '';
 
-            if (!namesInput || !contextsInput) {
-                resultArea.innerHTML = '<p class="error">กรุณากรอกรายชื่อผู้เข้าร่วม</p>';
-                return;
-            }
-
-            let names = namesInput.split('\n').filter(line => line.trim() !== '');
-            let contexts = contextsInput.split('\n').filter(line => line.trim() !== '');
-
-            if (names.length === 0) {
-                resultArea.innerHTML = '<p class="error">กรุณากรอกรายชื่ออย่างน้อย 1 ชื่อ</p>';
-                return;
-            }
-
-            function shuffle(array) {
-                for (let i = array.length - 1; i > 0; i--) {
+            const shuffle = (arr) => {
+                const newArr = [...arr];
+                for (let i = newArr.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
+                    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
                 }
-                return array;
-            }
+                return newArr;
+            };
 
-            // Shuffle Contexts
-            let shuffledContexts = shuffle([...contexts]);
-            let shuffledNames = shuffle([...names]);
+            const shuffledNames = shuffle(names);
+            const shuffledContexts = shuffle(contexts);
 
-            let html = '';
-            
-            shuffledNames.forEach((name, index) => {
-                let contextText = '';
-                if (index < shuffledContexts.length) {
-                    contextText = shuffledContexts[index];
-                } else {
-                    // วนลูปถ้าคนเยอะกว่าบริบท
-                    contextText = shuffledContexts[index % shuffledContexts.length];
-                }
-
-                // เพิ่ม animation delay เพื่อให้การ์ดค่อยๆ ขึ้นมาทีละใบ
-                let delay = index * 0.1;
-
-                html += `
-                    <div class="card" style="animation-delay: ${delay}s">
-                        <strong>${name}</strong>
-                        <span class="label-text">ได้รับสภาวะ</span>
-                        <span class="context">"${contextText}"</span>
-                    </div>
+            shuffledNames.forEach((name, i) => {
+                const context = shuffledContexts[i % shuffledContexts.length];
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.style.animation = `fadeInUp 0.6s ease forwards ${i * 0.15}s`; 
+                card.innerHTML = `
+                    <h3>${name}</h3>
+                    <span class="result-label">ได้รับสภาวะ</span>
+                    <div class="result-context">"${context}"</div>
                 `;
+                resultArea.appendChild(card);
             });
-
-            resultArea.innerHTML = html;
         }
 
         function clearResults() {
             const resultArea = document.getElementById('result-area');
-            resultArea.style.opacity = '0';
-            setTimeout(() => {
-                resultArea.innerHTML = '';
-                resultArea.style.opacity = '1';
-            }, 300);
+            resultArea.innerHTML = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
-
 </body>
 </html>
